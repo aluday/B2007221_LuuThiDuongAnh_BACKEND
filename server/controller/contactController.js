@@ -70,6 +70,19 @@ class contactController {
             return next(new ApiError(500, `Error retrieving contact with id= ${contactId}`));
         }
     }
+
+    async findAllFavorite (req, res, next){
+        try{
+            const document = await Contacts.find({favorite: "true"});
+            if(!document){
+                return next(new ApiError(404, "No such user exists"))
+            }
+            else res.send(document);
+        }catch(error){
+            return next(new ApiError(500, "An error occurred while retrieving favorite contacts"));
+        }
+    }
+
     async updateContact(req, res, next){
         let contactId = req.params.id;
         let contactInfo = req.body;
@@ -82,7 +95,27 @@ class contactController {
         }catch(error){
             return next(new ApiError(500, `Error updateting contact with id = ${contactId}`));
         }
-    }  
+    } 
+    async deleteContact (req, res, next){
+        let contactId = req.params.id;
+        try{
+            const document = await Contacts.findByIdAndRemove(contactId);
+            if(!document)
+                return next(new ApiError(404, "Contact not found"));
+            else res.send("Contact was deleted successfully");
+        }catch(error){
+            return next(new ApiError(500, `Could not delete contact ${contactId}`));
+        }
+    }
+    
+    // async deleteAllContact (req, res, next){
+    //     try{
+
+    //     }catch(error){
+    //         return next(new ApiError(500, ))
+    //     }
+    // }
+
 }
 
 module.exports = new contactController();

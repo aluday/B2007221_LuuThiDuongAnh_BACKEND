@@ -5,11 +5,12 @@ const router = express.Router();
 
 router.post("/", contacts.createContact);
 router.get("/", contacts.findAllContact);
+router.delete("/", contacts.deleteAllContact);
 router.get("/favorite", contacts.findAllFavorite);
 router.get("/:id", contacts.findOneContact);
 router.put("/:id", contacts.updateContact);
 router.delete("/:id", contacts.deleteContact);
-router.delete("/", contacts.deleteAllContact);
+
 // router.route("/")
 //     .get(contacts.findAll)
 //     .post(contacts.create)

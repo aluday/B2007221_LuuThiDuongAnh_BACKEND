@@ -108,13 +108,14 @@ class contactController {
         }
     }
     
-    // async deleteAllContact (req, res, next){
-    //     try{
-
-    //     }catch(error){
-    //         return next(new ApiError(500, ))
-    //     }
-    // }
+    async deleteAllContact (req, res, next){
+        try{
+            await Contacts.deleteMany();
+            res.send("Deleted all contacts")
+        }catch(error){
+            return next(new ApiError(500, ))
+        }
+    }
 
 }
 

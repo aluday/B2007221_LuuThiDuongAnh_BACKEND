@@ -33,13 +33,19 @@ class accountController {
         let password = req.body.password;
         try{
             const result = await Account.findOne({
-                username: username,
-                password: password
+                username: username
             })
-            if(!result){
-                return next(new ApiError(404, "Account not found"));
+            if(result){
+                const rs = await Account.findOne({
+                    password: password
+                })
+                if(rs){
+                    res.send("Logged in successfully");
+                }
+                else return next(new ApiError(404, "Incorrect password"));
             }
-            else res.send("Logged in successfully");
+            else return next(new ApiError(404, "User not found"))
+            
         }catch(error){
             return next(new ApiError(500, "An error occurred while login"))
         }

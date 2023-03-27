@@ -1,5 +1,19 @@
-// exports.create = (req, res) =>{
+
+
+const Contacts = require('../models/Contacts');
+const ObjectId = require('../helpers/mongoose');
+const ApiError = require('../api-error');
+// exports.create = async(req, res, next) =>{
 //     res.send("create handle");
+//     if(!req.body?.name){
+//         return next(new ApiError(400, "Name cann't empty"));
+//     }
+//     try{
+//         const contacts = new Contacts(req.body);
+//         contacts.create()
+//     }catch(error){
+//         return next(new ApiError(500, "An error occured whike creating the contact"))
+//     }
 // }
 
 // exports.findAll = (req, res)=> {
@@ -24,13 +38,11 @@
 // exports.findAllFavorite = (req, res)=> {
 //     res.send("findAllFavorite hander");
 // }
-
-const Contacts = require('../models/Contacts');
-const ObjectId = require('../helpers/mongoose');
-const ApiError = require('../helpers/api-error');
+// const ObjectId = require('../helpers/mongoose');
+// const ApiError = require('../helpers/api-error');
 
 class contactController {
-    createContact(req, res, next){
+    create(req, res, next){
         if(!req.body?.name){
             return next(new ApiError(400, "Name cannot emty"));
         }
@@ -46,7 +58,7 @@ class contactController {
             return next(new ApiError(500, "Cannot created contact"))
         }
     }
-    async findAllContact (req, res, next){
+    async findAll (req, res, next){
         try{
             const filter ={};
             const document = await Contacts.find(filter);
@@ -57,7 +69,7 @@ class contactController {
         }
     }
 
-    async findOneContact (req, res, next){
+    async findOne (req, res, next){
         let contactId = req.params.id;
         try{
             const document = await Contacts.findById(contactId);
@@ -83,7 +95,7 @@ class contactController {
         }
     }
 
-    async updateContact(req, res, next){
+    async update(req, res, next){
         let contactId = req.params.id;
         let contactInfo = req.body;
         try{
@@ -96,7 +108,7 @@ class contactController {
             return next(new ApiError(500, `Error updateting contact with id = ${contactId}`));
         }
     } 
-    async deleteContact (req, res, next){
+    async delete (req, res, next){
         let contactId = req.params.id;
         try{
             const document = await Contacts.findByIdAndRemove(contactId);
@@ -108,7 +120,7 @@ class contactController {
         }
     }
     
-    async deleteAllContact (req, res, next){
+    async deleteAll (req, res, next){
         try{
             await Contacts.deleteMany();
             res.send("Deleted all contacts")
